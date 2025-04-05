@@ -30,15 +30,34 @@ class _MainScreenState extends State<MainScreen> {
   double sum = 0;
   String operation = '';
   bool isNewNumber = true;
+  double firstNum = 0;
+  double secondNum = 0;
 
   void calculateResult(String op) {
     if (inputController.text.isEmpty) return;
     
     double currentNum = double.parse(inputController.text);
     
-    if (isNewNumber) {
+    if (operation.isEmpty) {
+      // First number
       sum = currentNum;
-      isNewNumber = false;
+      operation = op;
+      isNewNumber = true;
+    } else if (op == '=') {
+      // Perform calculation
+      switch (operation) {
+        case '+':
+          sum += currentNum;
+          break;
+        case '-':
+          sum -= currentNum;
+          break;
+        case 'x':
+          sum *= currentNum;
+          break;
+      }
+      operation = '';
+      isNewNumber = true;
     } else {
       switch (operation) {
         case '+':
@@ -50,19 +69,13 @@ class _MainScreenState extends State<MainScreen> {
         case 'x':
           sum *= currentNum;
           break;
-        case '÷':
-          if (currentNum != 0) {
-            sum /= currentNum;
-          }
-          break;
+        
       }
-    }
-    
-    operation = op;
-    inputController.text = sum.toString();
-    if (op != '=') {
+      operation = op;
       isNewNumber = true;
     }
+    
+    inputController.text = sum.toString();
   }
 
   @override
@@ -133,7 +146,9 @@ class _MainScreenState extends State<MainScreen> {
                   calculatorButton(text: '7', onPressed: () {
                     if (isNewNumber) inputController.text = '';
                     inputController.text += '7';
+                    print(isNewNumber);
                     isNewNumber = false;
+                    
                   }),
                   calculatorButton(text: '8', onPressed: () {
                     if (isNewNumber) inputController.text = '';
@@ -156,7 +171,13 @@ class _MainScreenState extends State<MainScreen> {
                     inputController.text += '.';
                     isNewNumber = false;
                   }),
-                  calculatorButton(text: '=', onPressed: () => calculateResult('=')),
+                  calculatorButton(text: '=', onPressed: () {
+    if (operation.isNotEmpty && !isNewNumber) {
+      calculateResult('=');    // تنفيذ العملية الحسابية الأخيرة
+      operation = '';         // إعادة تعيين العملية
+      isNewNumber = true;     // تجهيز لعملية جديدة
+    }
+  }),
                   calculatorButton(text: 'C', onPressed: () {
                     inputController.clear();
                     sum = 0;
