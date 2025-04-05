@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_widgets.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 
 void main() {
   runApp(const MainApp());
@@ -81,115 +82,134 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
+      body: SizedBox.expand(
+        child: Stack(
           children: [
-            Container( 
-              padding: const EdgeInsets.all(16.0),
-              color: const Color.fromARGB(255, 243, 249, 253),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.end,
-                controller: inputController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+            AspectRatio(
+              aspectRatio: 0.6,
+              child: BlurHash(
+                hash: 'mdNvlfS0~W%MmWoxMxR%xbbXNFWU-XjIRjt7M|s;ofWBWBt7ofWC',
+                //image: 'https://example.com/image.jpg', // Replace with your image URL
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                imageFit: BoxFit.cover,
+              ),
+            ),
+            SafeArea(
+          child: Column(
+            children: [
+              Container( 
+                padding: const EdgeInsets.all(16.0),
+                //color: const Color.fromARGB(255, 243, 249, 253),
+                child: TextField(
+                  //keyboardType: TextInputType.number,
+                  textAlign: TextAlign.end,
+                  controller: inputController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(color: Color.fromARGB(255, 232, 32, 166), width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(color: Color.fromARGB(255, 232, 32, 166), width: 2.0),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  cursorColor: Color.fromARGB(255, 247, 64, 147),
+                  style: const TextStyle(fontSize: 24, color: Color.fromARGB(255, 150, 27, 97)),
                 ),
-                cursorColor: Colors.blue,
-                style: const TextStyle(fontSize: 24, color: Colors.black),
               ),
-            ),
-            Container( 
-              padding: const EdgeInsets.all(16.0),
-              height: 550,
-              child: GridView.count(
-                crossAxisCount: 4,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                children: [
-                  calculatorButton(text: '1', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '1';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '2', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '2';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '3', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '3';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '+', onPressed: () => calculateResult('+')),
-                  calculatorButton(text: '4', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '4';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '5', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '5';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '6', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '6';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '-', onPressed: () => calculateResult('-')),
-                  calculatorButton(text: '7', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '7';
-                    print(isNewNumber);
-                    isNewNumber = false;
-                    
-                  }),
-                  calculatorButton(text: '8', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '8';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '9', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '9';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: 'x', onPressed: () => calculateResult('x')),
-                  calculatorButton(text: '0', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '0';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '.', onPressed: () {
-                    if (isNewNumber) inputController.text = '';
-                    inputController.text += '.';
-                    isNewNumber = false;
-                  }),
-                  calculatorButton(text: '=', onPressed: () {
-    if (operation.isNotEmpty && !isNewNumber) {
-      calculateResult('=');    // تنفيذ العملية الحسابية الأخيرة
-      operation = '';         // إعادة تعيين العملية
-      isNewNumber = true;     // تجهيز لعملية جديدة
-    }
-  }),
-                  calculatorButton(text: 'C', onPressed: () {
-                    inputController.clear();
-                    sum = 0;
-                    operation = '';
-                    isNewNumber = true;
-                  }),
-                ],
+              Container( 
+                padding: const EdgeInsets.all(16.0),
+                height: 550,
+                child: GridView.count(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  children: [
+                    calculatorButton(text: '1', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '1';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '2', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '2';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '3', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '3';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '+', onPressed: () => calculateResult('+')),
+                    calculatorButton(text: '4', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '4';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '5', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '5';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '6', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '6';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '-', onPressed: () => calculateResult('-')),
+                    calculatorButton(text: '7', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '7';
+                      print(isNewNumber);
+                      isNewNumber = false;
+                      
+                    }),
+                    calculatorButton(text: '8', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '8';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '9', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '9';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: 'x', onPressed: () => calculateResult('x')),
+                    calculatorButton(text: '0', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '0';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '.', onPressed: () {
+                      if (isNewNumber) inputController.text = '';
+                      inputController.text += '.';
+                      isNewNumber = false;
+                    }),
+                    calculatorButton(text: '=', onPressed: () {
+          if (operation.isNotEmpty && !isNewNumber) {
+        calculateResult('=');    // تنفيذ العملية الحسابية الأخيرة
+        operation = '';         // إعادة تعيين العملية
+        isNewNumber = true;     // تجهيز لعملية جديدة
+          }
+        }),
+                    calculatorButton(text: 'C', onPressed: () {
+                      inputController.clear();
+                      sum = 0;
+                      operation = '';
+                      isNewNumber = true;
+                    }),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      ]),
+    ),
     );
   }
 

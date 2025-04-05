@@ -5,7 +5,7 @@ Widget calculatorButton({required String text, required VoidCallback onPressed})
     onPressed: onPressed,
     style: ElevatedButton.styleFrom(
       padding: const EdgeInsets.all(20),
-      backgroundColor: Color.fromARGB(255, 248, 205, 106),
+      backgroundColor: Color.fromARGB(255, 169, 62, 112),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
