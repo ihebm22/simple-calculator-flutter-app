@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'custom_widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
+import 'record_model.dart';
 
 void main() {
   runApp(const MainApp());
@@ -33,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
   bool isNewNumber = true;
   double firstNum = 0;
   double secondNum = 0;
+  List<Record> records = [];
 
   void calculateResult(String op) {
     if (inputController.text.isEmpty) return;
@@ -59,6 +61,11 @@ class _MainScreenState extends State<MainScreen> {
       }
       operation = '';
       isNewNumber = true;
+      // Save the record
+      setState(() {
+        records.add(Record(dateTime: DateTime.now(), value: sum.toString()));
+      });
+      
     } else {
       switch (operation) {
         case '+':
@@ -86,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Stack(
           children: [
             AspectRatio(
-              aspectRatio: 0.6,
+              aspectRatio: 0.595,
               child: BlurHash(
                 hash: 'mdNvlfS0~W%MmWoxMxR%xbbXNFWU-XjIRjt7M|s;ofWBWBt7ofWC',
                 //image: 'https://example.com/image.jpg', // Replace with your image URL
@@ -96,8 +103,8 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             SafeArea(
-          child: Column(
-            children: [
+              child: Column(
+                children: [
               Container( 
                 padding: const EdgeInsets.all(16.0),
                 //color: const Color.fromARGB(255, 243, 249, 253),
@@ -205,10 +212,58 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 ),
               ),
-            ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 17),
+                    child: Text('Your Records:', style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 39, 9, 29))),
+                  ),
+                  Padding(
+                    padding:const EdgeInsets.only(left: 20),
+                  child: TextButton(
+                    child: Text('Delete all',style: TextStyle(color: Color.fromARGB(255, 245, 220, 236)),),
+                    onPressed: () {
+                      setState(() {
+                        records.clear();
+                      });
+                    },
+                  ),
+
+              )],
+              ),
+              if (records.isNotEmpty) 
+              Expanded(child: ListView.builder(
+                itemCount: records.length,
+                itemBuilder: (context,index){
+                  return recordCard(record: records[index]);
+                }
+            ),
+          ) else Center(
+                child: Text('No records yet', style: TextStyle(fontSize: 20, color: Color.fromARGB(133, 39, 9, 29))),
+              ),
+              ],
+            ),
           ),
-        ),
-      ]),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: ElevatedButton(
+                onPressed: (){}, 
+                child: Icon(Icons.menu), 
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 241, 188, 224),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Color.fromARGB(255, 232, 32, 166), width: 2.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
     );
   }
